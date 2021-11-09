@@ -9,7 +9,7 @@ app.use(express.json());
 app.use(cors());
 
 mongoose.connect(
-  "mongodb+srv://Mubby09:Olamilekan1996@jobtestcluster.bcl3k.mongodb.net/jobtest?retryWrites=true&w=majority",
+  "mongodb+srv://Mubby09:searchlight12345@jobtestcluster.bcl3k.mongodb.net/jobtest?retryWrites=true&w=majority",
   {
     useNewUrlParser: true
   }
