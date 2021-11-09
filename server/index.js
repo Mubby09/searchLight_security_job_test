@@ -3,8 +3,10 @@ const app = express();
 const mongoose = require("mongoose");
 const PORT = 5000;
 const Movie = require("../server/schemaFolder/Movies");
+const cors = require("cors");
 
 app.use(express.json());
+app.use(cors());
 
 mongoose.connect(
   "mongodb+srv://Mubby09:Olamilekan1996@jobtestcluster.bcl3k.mongodb.net/jobtest?retryWrites=true&w=majority",
@@ -13,11 +15,15 @@ mongoose.connect(
   }
 );
 
-app.get("/", async (req, res) => {
+app.post("/postMovie", async (req, res) => {
+  const movieTitle = req.body.movieTitle;
+  const releaseDate = req.body.releaseDate;
+  const movieGenre = req.body.movieGenre;
+
   const movie = new Movie({
-    movieTitle: "Gang",
-    releaseDate: 1998,
-    movieGenre: "horror"
+    movieTitle: movieTitle,
+    releaseDate: releaseDate,
+    movieGenre: movieGenre
   });
   try {
     await movie.save();
@@ -25,6 +31,21 @@ app.get("/", async (req, res) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+app.get("/readMovie", async (req, res) => {
+  Movie.find({}, (err, result) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(result);
+  });
+});
+
+app.delete("/deleteMovie/:id", async (req, res) => {
+  const id = req.params.id;
+
+  await Movie.findByIdAndDelete(id).exec();
 });
 
 app.listen(PORT, () => {
