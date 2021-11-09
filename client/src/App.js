@@ -31,6 +31,7 @@ const App = () => {
   };
 
   const deleteMovie = (id) => {
+    window.location.reload();
     Axios.delete(`http://localhost:5000/deleteMovie/${id}`);
   };
 
@@ -38,73 +39,76 @@ const App = () => {
     <div>
       <div>
         <h2>SEARCHLIGHT SECURITY FULLSTACK DEVELOPER TEST</h2>
-        <Box
-          component="form"
-          sx={{
-            "& > :not(style)": { m: 1, width: "25ch" }
-          }}
-          noValidate
-          autoComplete="off"
-        >
-          <TextField
-            onChange={(e) => {
-              setMovieTitle(e.target.value);
+        <form>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { m: 1, width: "25ch" }
             }}
-            type="text"
-            id="outlined-basic"
-            label="Movie Title"
-            variant="outlined"
-          />
-          <TextField
-            onChange={(e) => {
-              setReleaseDate(e.target.value);
-            }}
-            type="text"
-            id="filled-basic"
-            label="Release Date"
-            variant="outlined"
-          />
-          <TextField
-            onChange={(e) => {
-              setMovieGenre(e.target.value);
-            }}
-            type="text"
-            id="standard-basic"
-            label="Movie Genre"
-            variant="outlined"
-          />
-          <Stack spacing={2} direction="row">
-            <Button onClick={addMovie} variant="contained">
-              ADD MOVIE
-            </Button>
-          </Stack>
-        </Box>
+            noValidate
+            autoComplete="off"
+          >
+            <TextField
+              onChange={(e) => {
+                setMovieTitle(e.target.value);
+              }}
+              type="text"
+              id="outlined-basic"
+              label="Movie Title"
+              variant="outlined"
+            />
+            <TextField
+              onChange={(e) => {
+                setReleaseDate(e.target.value);
+              }}
+              type="number"
+              id="filled-basic"
+              label="Release Date"
+              variant="outlined"
+            />
+            <TextField
+              onChange={(e) => {
+                setMovieGenre(e.target.value);
+              }}
+              type="text"
+              id="standard-basic"
+              label="Movie Genre"
+              variant="outlined"
+            />
+            <Stack spacing={2} direction="row">
+              <Button type="submit" onClick={addMovie} variant="contained">
+                ADD MOVIE
+              </Button>
+            </Stack>
+          </Box>
+        </form>
       </div>
       <h2>Movie List</h2>
       {movieList.map((movie) => {
         return (
           <div key={movie.movieTitle} className="movie_grid">
-            <Card sx={{ minWidth: 300, minHeight: 150 }}>
+            <Card sx={{ minWidth: 300, minHeight: 100 }}>
               <CardContent>
-                <Typography
-                  sx={{ fontSize: 14 }}
-                  color="text.secondary"
-                  gutterBottom
+                <Typography sx={{ fontSize: 14 }} variant="body2" gutterBottom>
+                  <b>MOVIE TITLE:</b>
+                  <br /> {movie.movieTitle}
+                </Typography>
+                <Typography sx={{ fontSize: 14 }} variant="body2">
+                  <b>MOVIE GENRE:</b>
+                  <br /> {movie.movieGenre}
+                </Typography>
+                <Typography sx={{ fontSize: 14 }} variant="body2">
+                  <b>RELEASE DATE:</b>
+                  <br /> {movie.releaseDate}
+                </Typography>
+                <button
+                  onClick={() => {
+                    deleteMovie(movie._id);
+                  }}
                 >
-                  {movie.movieTitle}
-                </Typography>
-                <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                  {movie.movieGenre}
-                </Typography>
-                <Typography variant="body2">{movie.releaseDate}</Typography>
+                  DELETE
+                </button>
               </CardContent>
-              <button
-                onClick={() => {
-                  deleteMovie(movie._id);
-                }}
-              >
-                DELETE
-              </button>
             </Card>
           </div>
         );
